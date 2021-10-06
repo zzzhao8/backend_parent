@@ -18,6 +18,7 @@
     <modules>
         <module>backend_show_provider</module>
         <module>backend-show-consumer</module>
+        <module>backend_show_hystrix</module>
     </modules>
 
     <properties>

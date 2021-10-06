@@ -1,5 +1,5 @@
 server:
-  port: 8201
+  port: 7201
 
 eureka:
   client:
@@ -10,6 +10,12 @@ eureka:
 spring:
   application:
     name: hello-service-consumer
+
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    enabled: true
 
 logging:
   config: classpath:logback.xml

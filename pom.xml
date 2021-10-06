@@ -15,9 +15,14 @@
     <name>backend-parent</name>
     <description>Meetingfilm的后端运维系统</description>
     <modules>
+        <module>backend_user</module>
+        <module>backend_film</module>
+        <module>backend_cinema</module>
+        <module>backend_hall</module>
+
+        <module>backend_api</module>
         <module>backend_common</module>
         <module>backend_utils</module>
-        <module>backend_user</module>
         <module>backend_show</module>
         <module>backend_eureka_server</module>
     </modules>
@@ -91,6 +96,12 @@
             <dependency>
                 <groupId>com.mooc.meetingfilm</groupId>
                 <artifactId>backend-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mooc.meetingfilm</groupId>
+                <artifactId>backend-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

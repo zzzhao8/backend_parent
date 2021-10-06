@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mooc.meetingfilm.hall.dao.mapper.MoocFieldTMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mooc.meetingfilm.hall.dao.entity.MoocFieldT">
+        <id column="UUID" property="uuid" />
+        <result column="cinema_id" property="cinemaId" />
+        <result column="film_id" property="filmId" />
+        <result column="begin_time" property="beginTime" />
+        <result column="end_time" property="endTime" />
+        <result column="hall_id" property="hallId" />
+        <result column="hall_name" property="hallName" />
+        <result column="price" property="price" />
+    </resultMap>
+    <select id="describeHalls" resultType="com.mooc.meetingfilm.hall.controller.vo.HallsRespVO">
+        SELECT
+        (SELECT cinema_name FROM mooc_cinema_t c WHERE c.uuid = fd.cinema_id)AS cinemaName,
+        hall_name AS hallName,
+        (SELECT film_name FROM mooc_film_t fm WHERE fm.uuid=fd.film_id) AS filmName,
+        (SELECT show_name FROM mooc_hall_dict_t hd WHERE hd.uuid = fd.hall_id) AS hallTypeName,
+        begin_time AS beginTime,
+        end_time AS endTime,
+        price AS filmPrice
+        FROM mooc_field_t fd
+        ${ew.customSqlSegment}
+    </select>
+</mapper>
