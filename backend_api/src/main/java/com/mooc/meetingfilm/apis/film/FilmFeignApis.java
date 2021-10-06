@@ -21,7 +21,7 @@ public interface FilmFeignApis {
      * @return
      * @throws CommonServiceException
      */
-    @RequestMapping(value = "/{filmId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/films/{filmId}", method = RequestMethod.GET)
     BaseResponseVO<DescribeFilmRespVO> describeFilmsById(@PathVariable("filmId") String filmId) throws CommonServiceException;
 
 }

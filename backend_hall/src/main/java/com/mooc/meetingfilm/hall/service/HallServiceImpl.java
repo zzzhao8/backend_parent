@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.mooc.meetingfilm.apis.film.vo.DescribeFilmRespVO;
+import com.mooc.meetingfilm.hall.apis.FilmFeignApi;
 import com.mooc.meetingfilm.hall.controller.vo.HallSaveReqVO;
 import com.mooc.meetingfilm.hall.controller.vo.HallsReqVO;
 import com.mooc.meetingfilm.hall.controller.vo.HallsRespVO;
@@ -11,6 +13,7 @@ import com.mooc.meetingfilm.hall.dao.entity.MoocFieldT;
 import com.mooc.meetingfilm.hall.dao.entity.MoocHallFilmInfoT;
 import com.mooc.meetingfilm.hall.dao.mapper.MoocFieldTMapper;
 import com.mooc.meetingfilm.hall.dao.mapper.MoocHallFilmInfoTMapper;
+import com.mooc.meetingfilm.utils.common.vo.BaseResponseVO;
 import com.mooc.meetingfilm.utils.exception.CommonServiceException;
 import com.mooc.meetingfilm.utils.util.ToolUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,9 @@ public class HallServiceImpl implements HallServiceAPI{
 
     @Autowired
     private LoadBalancerClient eurekaClient;
+
+    @Resource
+    private FilmFeignApi filmFeignApi;
 
     @Override
     public IPage<HallsRespVO> describeHalls(HallsReqVO hallsReqVO) throws CommonServiceException {
@@ -81,7 +87,7 @@ public class HallServiceImpl implements HallServiceAPI{
     }
 
 
-    private MoocHallFilmInfoT describeFilmInfo(String filmId) throws CommonServiceException{
+    private MoocHallFilmInfoT describeFilmInfo2(String filmId) throws CommonServiceException{
 
         // get register
         ServiceInstance choose = eurekaClient.choose("film-service");
@@ -112,5 +118,26 @@ public class HallServiceImpl implements HallServiceAPI{
         return filmInfo;
     }
 
+    private MoocHallFilmInfoT describeFilmInfo(String filmId) throws CommonServiceException{
+
+        //解析返回值
+        BaseResponseVO<DescribeFilmRespVO> baseResponseVO = filmFeignApi.describeFilmsById(filmId);
+        DescribeFilmRespVO filmResult = baseResponseVO.getData();
+        if (filmResult==null || ToolUtils.strIsNull(filmResult.getFilmId())) {
+            throw new CommonServiceException(404, "抱歉，未能找到对应电影信息, filmId : " + filmId);
+        }
+
+        //组织参数
+        MoocHallFilmInfoT filmInfo = new MoocHallFilmInfoT();
+
+        filmInfo.setFilmId(ToolUtils.str2Int(filmResult.getFilmId()));
+        filmInfo.setFilmName(filmResult.getFilmName());
+        filmInfo.setFilmLength(filmResult.getFilmLength());
+        filmInfo.setFilmCats(filmResult.getFilmCats());
+        filmInfo.setActors(filmResult.getActors());
+        filmInfo.setImgAddress(filmResult.getImgAddress());
+
+        return filmInfo;
+    }
 
 }
