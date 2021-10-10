@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
-@EnableDiscoveryClient
+@EnableDiscoveryClient   //开始eureka支持
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.mooc.meetingfilm"})
 @MapperScan(basePackages = {"com.mooc.meetingfilm.user.dao.mapper"})

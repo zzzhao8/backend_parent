@@ -10,9 +10,12 @@ import com.mooc.meetingfilm.film.service.FilmServiceAPI;
 import com.mooc.meetingfilm.utils.common.vo.BasePageVO;
 import com.mooc.meetingfilm.utils.common.vo.BaseResponseVO;
 import com.mooc.meetingfilm.utils.exception.CommonServiceException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 import java.util.Map;
 
 /**
@@ -20,6 +23,7 @@ import java.util.Map;
  * @ClassName: FilmController
  * @description: 影片模块表现层
  */
+@Slf4j
 @RestController
 @RequestMapping(value = "/films")
 public class FilmController {
@@ -43,7 +47,14 @@ public class FilmController {
 
     /** 获取影片列表 */
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public BaseResponseVO describeFilms(BasePageVO basePageVo) throws CommonServiceException {
+    public BaseResponseVO describeFilms(HttpServletRequest request, BasePageVO basePageVo) throws CommonServiceException {
+        //Header 信息打印
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            log.error("describeFilms - headName:{}, headValue:{}", headerName, request.getHeader(headerName));
+        }
+
         //检查入参
         basePageVo.checkParam();
 

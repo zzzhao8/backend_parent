@@ -20,6 +20,7 @@
         <module>backend_cinema</module>
         <module>backend_hall</module>
 
+        <module>backend_apigw_zuul</module>
         <module>backend_api</module>
         <module>backend_common</module>
         <module>backend_utils</module>
