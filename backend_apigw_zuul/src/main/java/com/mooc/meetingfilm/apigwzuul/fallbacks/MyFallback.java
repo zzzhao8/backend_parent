@@ -19,7 +19,7 @@ import java.io.InputStream;
  * @program : com.mooc.meetingfilm.apigwzuul
  * @description : 业务降级处理
  **/
-@Component
+//@Component
 public class MyFallback implements FallbackProvider {
 
     /**

@@ -33,6 +33,14 @@ public class BaseResponseVO<M> {
         return response;
     }
 
+    // 未登录异常
+    public static<M> BaseResponseVO noLogin(){
+        BaseResponseVO response = new BaseResponseVO();
+        response.setCode(401);
+        response.setMessage("请登录");
+        return response;
+    }
+
     // 出现业务异常
     public static BaseResponseVO serviceException(CommonServiceException e){
         BaseResponseVO response = new BaseResponseVO();
